@@ -21,7 +21,6 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name="Converse comigo!"))
 
 def dividir_texto(texto, limite=1024):
-    """Divide o texto em pedaços para caber no embed (limite de 1024 por campo)."""
     partes = []
     while len(texto) > limite:
         corte = texto.rfind('\n', 0, limite)
@@ -36,11 +35,6 @@ def dividir_texto(texto, limite=1024):
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def setmodel(ctx, model_key: str):
-    """
-    Define o modelo do Gemini a ser usado.
-    Uso: !setmodel <chave_do_modelo>
-    Modelos disponíveis: pro, flash
-    """
     success, message = set_active_model(model_key)
     if success:
         await ctx.send(f"✅ {message}")
@@ -61,25 +55,22 @@ async def on_message(message):
     if message.author.bot:
         return
     
-    # Processa comandos primeiro
     if message.content.startswith(bot.command_prefix):
         await bot.process_commands(message)
         return
 
-    # Lógica de resposta a mensagens normais
     if not pode_enviar_resposta(message.channel.id):
-        # Envia uma mensagem de cooldown mais discreta
         try:
             await message.add_reaction("⏳")
         except discord.Forbidden:
-            pass # Não faz nada se não tiver permissão para adicionar reações
+            pass
         return
 
     log_interaction("mensagem", message)
 
     async with message.channel.typing():
         mensagens = await buscar_historico_canal(message.channel)
-        if not mensagens: # Se não houver histórico, não faz nada
+        if not mensagens:
             return
             
         resposta = ask_gemini(mensagens)
@@ -89,7 +80,7 @@ async def on_message(message):
 
         embed = discord.Embed(
             title="💬 Resposta do Gemini",
-            color=discord.Color.from_rgb(74, 144, 226) # Cor do Google
+            color=discord.Color.from_rgb(74, 144, 226)
         )
 
         partes = dividir_texto(resposta, limite=1024)
