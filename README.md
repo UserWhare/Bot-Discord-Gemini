@@ -2,9 +2,9 @@
 
 # Gemini Discord Bot
 
-**A lightweight Discord bot powered by Google Gemini with contextual replies, model switching and per-channel cooldown.**
+**Bot para Discord integrado ao Google Gemini, com respostas contextuais, memória opcional e participação natural em canais.**
 
-![Python](https://img.shields.io/badge/Python-3670A0?style=for-the-badge&logo=python&logoColor=yellow)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-2ea44f?style=for-the-badge)
@@ -13,80 +13,111 @@
 
 ---
 
-Gemini Discord Bot reads recent channel context and uses Google Gemini to reply directly inside Discord.
+O Gemini Discord Bot acompanha o contexto recente da conversa e responde diretamente no Discord usando a Gemini API.
 
-## Features
+## Recursos
 
-- Context-aware responses using the latest channel messages
-- Switchable Gemini model profiles with `!setmodel`
-- 10-second cooldown per channel
-- Responses formatted as Discord embeds
-- Automatic splitting for longer responses
-- Local interaction logging
-- Environment-based token and API key configuration
+- Respostas contextuais com histórico recente do canal
+- Resposta por menção, nome ou reply
+- Modo natural opcional por canal
+- Memórias explícitas e privadas por usuário
+- Personalidade configurável por servidor
+- Cooldown e fila de respostas por canal
+- Banco local SQLite para configurações e memórias
+- Comandos slash para administração
+- Bloqueio de menções automáticas
 
-## Setup
+## Instalação
 
-Clone the repository:
+Clone o projeto:
 
 ```bash
 git clone https://github.com/UserWhare/Bot-Discord-Gemini.git
 cd Bot-Discord-Gemini
 ```
 
-Install the dependencies:
+Instale as dependências:
 
 ```bash
-pip install -r requirements.txt
+npm install
 ```
 
-Create your local `.env` from the example file:
+Crie o `.env` a partir do exemplo:
 
 ```env
-DISCORD_BOT_TOKEN=YOUR_DISCORD_BOT_TOKEN
-GOOGLE_API_KEY=YOUR_GEMINI_API_KEY
+DISCORD_TOKEN=SEU_TOKEN_DO_DISCORD
+GEMINI_API_KEY=SUA_CHAVE_DO_GEMINI
+GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
-Then start the bot:
+Compile e inicie:
 
 ```bash
-python bot.py
+npm run build
+npm start
 ```
 
-## Commands
+Para desenvolvimento:
 
-| Command | Description | Permission |
-| --- | --- | --- |
-| `!setmodel pro` | Switches to the configured Pro model | Administrator |
-| `!setmodel flash` | Switches to the configured Flash model | Administrator |
+```bash
+npm run dev
+```
 
-## Project Structure
+## Comandos
+
+| Comando | Função |
+| --- | --- |
+| `/gemini ajuda` | Mostra o guia rápido |
+| `/gemini status` | Exibe estado, modelo e estatísticas |
+| `/gemini canal-ativar` | Ativa o modo natural no canal |
+| `/gemini canal-desativar` | Desativa o modo natural |
+| `/gemini lembrar` | Salva uma memória pessoal |
+| `/gemini memorias` | Lista suas memórias |
+| `/gemini esquecer` | Apaga uma memória |
+| `/gemini pausar` | Pausa ou retoma o bot |
+| `/gemini personalidade-definir` | Ajusta a personalidade do servidor |
+| `/gemini personalidade-resetar` | Restaura a personalidade padrão |
+
+Os comandos administrativos exigem **Gerenciar Servidor** ou um ID configurado em `OWNER_IDS`.
+
+## Estrutura
 
 ```text
 Bot-Discord-Gemini/
-├── bot.py
-├── ai_utils.py
-├── spam_control.py
-├── logger.py
-├── requirements.txt
+├── config/
+│   └── personality.md
+├── src/
+│   ├── ai.ts
+│   ├── commands.ts
+│   ├── config.ts
+│   ├── database.ts
+│   ├── index.ts
+│   └── utils.ts
 ├── .env.example
+├── discloud.config
+├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
-## Notes
+## Privacidade
 
-The model identifiers are defined in `ai_utils.py` and may need to be updated as Google changes model availability.
+O histórico completo do Discord não é armazenado. Apenas mensagens recentes necessárias para gerar a resposta são enviadas à Gemini API com `store: false`.
 
-Interactions are logged locally to `bot_interacoes.log`. This file is ignored by Git and should not be committed.
+As memórias só são criadas quando o próprio usuário solicita e são isoladas por usuário e servidor. Tokens, banco local e logs ficam fora do Git através do `.gitignore`.
 
-## License
+## Discloud
 
-Released under the [MIT License](LICENSE).
+O projeto inclui `discloud.config` com build automático do TypeScript. Configure `DISCORD_TOKEN` e `GEMINI_API_KEY` como variáveis de ambiente da aplicação antes de iniciar o bot.
+
+## Licença
+
+Distribuído sob a [Licença MIT](LICENSE).
 
 ---
 
 <div align="center">
 
-Made by [UserWhare](https://github.com/UserWhare)
+Feito por [UserWhare](https://github.com/UserWhare)
 
 </div>

@@ -1,12 +1,7 @@
+node_modules/
+dist/
+data/
 .env
-bot_interacoes.log
-
-__pycache__/
-*.py[cod]
-
-.venv/
-venv/
-
-.idea/
-.vscode/
+*.log
 .DS_Store
+Thumbs.db
