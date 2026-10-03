@@ -1,0 +1,12 @@
+.env
+bot_interacoes.log
+
+__pycache__/
+*.py[cod]
+
+.venv/
+venv/
+
+.idea/
+.vscode/
+.DS_Store
